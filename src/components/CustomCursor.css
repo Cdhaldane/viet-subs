@@ -1,0 +1,38 @@
+.custom-cursor {
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--color-pink);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+  mix-blend-mode: difference;
+}
+
+.custom-cursor.pointer {
+  width: 60px;
+  height: 60px;
+  border-color: var(--color-pink-light);
+  background-color: rgba(255, 20, 147, 0.1);
+}
+
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-pink);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px var(--color-pink);
+}
+
+@media (max-width: 768px) {
+  .custom-cursor,
+  .cursor-dot {
+    display: none;
+  }
+}

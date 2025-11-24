@@ -4,12 +4,30 @@ A modern, responsive website for a Vietnamese sub restaurant built with React an
 
 ## Features
 
-- 🎨 Modern black and pink design theme
-- 📱 Fully responsive layout
+- 🎨 Modern black and pink design theme with neon accents
+- 📱 Fully responsive layout for all devices
 - ⚡ Fast performance with Vite
-- 🍜 Menu showcase
-- 📖 About section
-- 📞 Contact information
+- 🎭 Parallax scrolling effects on hero section
+- ✨ Scroll reveal animations with Intersection Observer
+- 📊 Animated statistics counter with number animations
+- 💬 Auto-rotating testimonials carousel with 5-star ratings
+- 🖼️ Interactive image gallery with hover effects
+- 🎯 Scroll progress indicator bar at the top
+- 🔝 Floating back-to-top button
+- 🌟 Neon glow effects on text and buttons
+- 🎪 Floating particle animations in hero section
+- 🪟 Glassmorphism (frosted glass) effects on cards
+- 🎨 3D card tilt effects on hover
+- 🖱️ Custom animated cursor (desktop only)
+- 💫 Smooth scroll navigation
+- � Animated loading screen
+- 🔘 Ripple effects on button clicks
+- �🍜 Menu showcase with high-quality images
+- 📸 Ken Burns effect on images
+- 📖 About section with animated feature cards
+- 📞 Contact information footer
+- 🎭 Multiple gradient backgrounds
+- ⭐ Glowing price tags with pulse animation
 
 ## Getting Started
 
@@ -52,11 +70,23 @@ npm run preview
 viet-subs/
 ├── src/
 │   ├── components/
-│   │   ├── Header.jsx
-│   │   ├── Hero.jsx
-│   │   ├── Menu.jsx
-│   │   ├── About.jsx
-│   │   └── Footer.jsx
+│   │   ├── Header.jsx          # Sticky navigation with mobile menu
+│   │   ├── Hero.jsx            # Hero section with parallax
+│   │   ├── Stats.jsx           # Animated statistics counter
+│   │   ├── Menu.jsx            # Menu with images and 3D effects
+│   │   ├── Gallery.jsx         # Interactive image gallery
+│   │   ├── About.jsx           # About section with features
+│   │   ├── Testimonials.jsx    # Auto-rotating reviews carousel
+│   │   ├── Footer.jsx          # Contact and social links
+│   │   ├── ScrollProgress.jsx  # Top progress bar
+│   │   ├── BackToTop.jsx       # Floating back button
+│   │   ├── CustomCursor.jsx    # Animated custom cursor
+│   │   ├── FloatingParticles.jsx # Background particles
+│   │   ├── Loader.jsx          # Loading animation
+│   │   └── ParallaxSection.jsx # Reusable parallax component
+│   ├── hooks/
+│   │   ├── useScrollEffects.js # Scroll reveal & progress hooks
+│   │   └── useParallax.js      # Parallax scrolling hook
 │   ├── App.jsx
 │   ├── main.jsx
 │   └── index.css

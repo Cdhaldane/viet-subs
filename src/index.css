@@ -12,6 +12,12 @@
   --font-body: 'Poppins', sans-serif;
   
   --transition: all 0.3s ease;
+  
+  scroll-behavior: smooth;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 * {
@@ -26,6 +32,13 @@ body {
   color: var(--color-white);
   line-height: 1.6;
   overflow-x: hidden;
+  cursor: none;
+}
+
+@media (max-width: 768px) {
+  body {
+    cursor: auto;
+  }
 }
 
 .container {
@@ -59,19 +72,40 @@ body {
   transition: var(--transition);
   cursor: pointer;
   border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn:active::before {
+  width: 300px;
+  height: 300px;
 }
 
 .btn-primary {
   background-color: var(--color-pink);
   color: var(--color-white);
   border-color: var(--color-pink);
+  box-shadow: 0 0 20px rgba(255, 20, 147, 0.3);
 }
 
 .btn-primary:hover {
   background-color: var(--color-pink-dark);
   border-color: var(--color-pink-dark);
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(255, 20, 147, 0.4);
+  box-shadow: 0 10px 30px rgba(255, 20, 147, 0.6);
 }
 
 .btn-secondary {
@@ -84,6 +118,45 @@ body {
   background-color: var(--color-pink);
   color: var(--color-white);
   transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(255, 20, 147, 0.4);
+}
+
+/* Scroll Reveal Animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s ease-out;
+}
+
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Neon Text Effect */
+.neon-text {
+  text-shadow: 
+    0 0 10px var(--color-pink),
+    0 0 20px var(--color-pink),
+    0 0 30px var(--color-pink),
+    0 0 40px var(--color-pink);
+  animation: neonPulse 2s ease-in-out infinite;
+}
+
+@keyframes neonPulse {
+  0%, 100% {
+    text-shadow: 
+      0 0 10px var(--color-pink),
+      0 0 20px var(--color-pink),
+      0 0 30px var(--color-pink);
+  }
+  50% {
+    text-shadow: 
+      0 0 20px var(--color-pink),
+      0 0 30px var(--color-pink),
+      0 0 40px var(--color-pink),
+      0 0 50px var(--color-pink);
+  }
 }
 
 @media (max-width: 768px) {

@@ -1,6 +1,13 @@
 .menu {
   padding: 5rem 0;
   background: linear-gradient(180deg, var(--color-black) 0%, var(--color-dark) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.menu .container {
+  position: relative;
+  z-index: 1;
 }
 
 .menu-grid {
@@ -11,13 +18,17 @@
 }
 
 .menu-item {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2a1a2a 100%);
-  padding: 2rem;
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.7) 0%, rgba(42, 10, 26, 0.7) 100%);
+  backdrop-filter: blur(10px);
   border-radius: 15px;
-  border: 2px solid transparent;
-  transition: var(--transition);
+  border: 2px solid rgba(255, 20, 147, 0.2);
+  transition: all 0.4s ease;
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transform-style: preserve-3d;
+  perspective: 1000px;
 }
 
 .menu-item::before {
@@ -29,17 +40,58 @@
   bottom: 0;
   background: linear-gradient(135deg, transparent 0%, rgba(255, 20, 147, 0.1) 100%);
   opacity: 0;
-  transition: var(--transition);
+  transition: opacity 0.4s ease;
 }
 
 .menu-item:hover {
   border-color: var(--color-pink);
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(255, 20, 147, 0.3);
+  transform: translateY(-10px) rotateX(5deg);
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.5),
+    0 0 30px rgba(255, 20, 147, 0.4);
 }
 
 .menu-item:hover::before {
   opacity: 1;
+}
+
+.menu-item-image {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+}
+
+.menu-item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+  filter: brightness(0.9);
+}
+
+.menu-item:hover .menu-item-image img {
+  transform: scale(1.15) rotate(2deg);
+  filter: brightness(1.1);
+}
+
+.menu-item-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(10, 10, 10, 0.9) 100%
+  );
+}
+
+.menu-item-content {
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
 }
 
 .menu-item-header {
@@ -64,6 +116,17 @@
   color: var(--color-pink);
   white-space: nowrap;
   margin-left: 1rem;
+  text-shadow: 0 0 10px rgba(255, 20, 147, 0.5);
+  animation: priceGlow 2s ease-in-out infinite;
+}
+
+@keyframes priceGlow {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(255, 20, 147, 0.5);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(255, 20, 147, 0.8);
+  }
 }
 
 .menu-item-description {

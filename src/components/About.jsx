@@ -3,7 +3,15 @@ import './About.css'
 
 function About() {
   return (
-    <section id="about" className="about">
+    <section id="about" className="about reveal">
+      <div className="about-background">
+        <img 
+          src="https://images.unsplash.com/photo-1559301504-86a3155b7c99?w=1920&q=80" 
+          alt="Vietnamese ingredients"
+          loading="lazy"
+        />
+        <div className="about-image-overlay"></div>
+      </div>
       <div className="container">
         <div className="about-content">
           <div className="about-text">
@@ -26,16 +34,19 @@ function About() {
             </p>
           </div>
           <div className="about-features">
-            <div className="feature">
-              <h3>🥖 Fresh Daily</h3>
+            <div className="feature reveal">
+              <div className="feature-icon">🥖</div>
+              <h3>Fresh Daily</h3>
               <p>Baguettes baked fresh every morning</p>
             </div>
-            <div className="feature">
-              <h3>🌿 Authentic</h3>
+            <div className="feature reveal" style={{ animationDelay: '0.2s' }}>
+              <div className="feature-icon">🌿</div>
+              <h3>Authentic</h3>
               <p>Traditional Vietnamese recipes</p>
             </div>
-            <div className="feature">
-              <h3>❤️ Quality</h3>
+            <div className="feature reveal" style={{ animationDelay: '0.4s' }}>
+              <div className="feature-icon">❤️</div>
+              <h3>Quality</h3>
               <p>Premium ingredients, made with care</p>
             </div>
           </div>
