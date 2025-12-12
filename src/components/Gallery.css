@@ -1,6 +1,7 @@
 .gallery {
   padding: 5rem 0;
   background: linear-gradient(180deg, var(--color-black) 0%, var(--color-dark) 100%);
+  
 }
 
 .gallery-grid {

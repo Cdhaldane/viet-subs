@@ -8,7 +8,7 @@
   --color-gray: #808080;
   --color-gray-light: #d3d3d3;
   
-  --font-heading: 'Playfair Display', serif;
+  --font-heading: "Roboto", sans-serif;
   --font-body: 'Poppins', sans-serif;
   
   --transition: all 0.3s ease;
@@ -32,7 +32,7 @@ body {
   color: var(--color-white);
   line-height: 1.6;
   overflow-x: hidden;
-  cursor: none;
+  /* cursor: none; */
 }
 
 @media (max-width: 768px) {
@@ -59,7 +59,7 @@ body {
   text-align: center;
   font-size: 1.2rem;
   color: var(--color-gray-light);
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
 }
 
 .btn {
@@ -136,26 +136,26 @@ body {
 /* Neon Text Effect */
 .neon-text {
   text-shadow: 
-    0 0 10px var(--color-pink),
-    0 0 20px var(--color-pink),
-    0 0 30px var(--color-pink),
-    0 0 40px var(--color-pink);
+    0 0 5px var(--color-pink-dark),
+    0 0 10px var(--color-pink-dark),
+    0 0 20px var(--color-pink-dark),
+    0 0 30px var(--color-pink-dark);
   animation: neonPulse 2s ease-in-out infinite;
 }
 
 @keyframes neonPulse {
   0%, 100% {
     text-shadow: 
-      0 0 10px var(--color-pink),
-      0 0 20px var(--color-pink),
-      0 0 30px var(--color-pink);
+      0 0 10px var(--color-pink-dark),
+      0 0 20px var(--color-pink-dark),
+      0 0 30px var(--color-pink-dark);
   }
   50% {
     text-shadow: 
-      0 0 20px var(--color-pink),
-      0 0 30px var(--color-pink),
-      0 0 40px var(--color-pink),
-      0 0 50px var(--color-pink);
+      0 0 20px var(--color-pink-dark),
+      0 0 30px var(--color-pink-dark),
+      0 0 40px var(--color-pink-dark),
+      0 0 50px var(--color-pink-dark);
   }
 }
 
