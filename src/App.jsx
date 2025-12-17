@@ -32,7 +32,7 @@ function App() {
       {/* <Gallery /> */}
       <About />
       <Testimonials />
-      <InstagramFeed />
+      {/* <InstagramFeed /> */}
       <Footer />
       <BackToTop />
     </div>

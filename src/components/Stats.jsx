@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import './Stats.css'
+import { loadGoogleMapsAPI } from '../utils/googleMapsLoader'
 
 const PLACE_ID = import.meta.env.VITE_GOOGLE_PLACE_ID
+const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
 const CACHE_KEY = 'google_stats_cache'
 const CACHE_DURATION = 24 * 60 * 60 * 1000 // 24 hours in milliseconds
 
@@ -24,7 +26,13 @@ function Stats() {
 
   // Fetch Google Place data for rating and review count
   useEffect(() => {
-    const fetchPlaceStats = () => {
+    const fetchPlaceStats = async () => {
+      // Check if API key and Place ID are configured
+      if (!GOOGLE_API_KEY || !PLACE_ID) {
+        console.warn('Google Maps API key or Place ID not configured')
+        return
+      }
+
       // Check cache first
       const cachedData = localStorage.getItem(CACHE_KEY)
       if (cachedData) {
@@ -47,53 +55,44 @@ function Stats() {
         }
       }
 
-      // Wait for Google Maps API to load
-      const checkGoogleMaps = setInterval(() => {
-        if (window.google && window.google.maps && window.google.maps.places && window.google.maps.places.Place) {
-          clearInterval(checkGoogleMaps)
-          
-          try {
-            const place = new window.google.maps.places.Place({
-              id: PLACE_ID,
-            })
-            
-            // Fetch rating and user ratings total
-            place.fetchFields({
-              fields: ['rating', 'userRatingCount']
-            }).then((response) => {
-              const placeData = response.place
-              
-              if (placeData.rating) {
-                const stats = {
-                  rating: placeData.rating,
-                  totalReviews: placeData.userRatingCount || 0
-                }
-
-                // Cache the stats
-                localStorage.setItem(CACHE_KEY, JSON.stringify({
-                  stats,
-                  timestamp: Date.now()
-                }))
-
-                setFinalValues(prev => ({
-                  ...prev,
-                  reviews: stats.rating,
-                  totalReviews: stats.totalReviews
-                }))
-                
-                console.log('Fetched Google Place stats:', stats)
-              }
-            }).catch((error) => {
-              console.error('Error fetching place stats:', error)
-            })
-          } catch (err) {
-            console.error('Error setting up Place:', err)
+      try {
+        // Dynamically load Google Maps API
+        await loadGoogleMapsAPI(GOOGLE_API_KEY, ['places'])
+        
+        const place = new window.google.maps.places.Place({
+          id: PLACE_ID,
+        })
+        
+        // Fetch rating and user ratings total
+        const response = await place.fetchFields({
+          fields: ['rating', 'userRatingCount']
+        })
+        
+        const placeData = response.place
+        
+        if (placeData.rating) {
+          const stats = {
+            rating: placeData.rating,
+            totalReviews: placeData.userRatingCount || 0
           }
-        }
-      }, 100)
 
-      // Cleanup after 10 seconds
-      setTimeout(() => clearInterval(checkGoogleMaps), 10000)
+          // Cache the stats
+          localStorage.setItem(CACHE_KEY, JSON.stringify({
+            stats,
+            timestamp: Date.now()
+          }))
+
+          setFinalValues(prev => ({
+            ...prev,
+            reviews: stats.rating,
+            totalReviews: stats.totalReviews
+          }))
+          
+          console.log('Fetched Google Place stats:', stats)
+        }
+      } catch (err) {
+        console.error('Error loading Google Maps or fetching stats:', err)
+      }
     }
 
     fetchPlaceStats()

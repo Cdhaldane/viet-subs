@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import './Testimonials.css'
+import { loadGoogleMapsAPI } from '../utils/googleMapsLoader'
 
 const PLACE_ID = import.meta.env.VITE_GOOGLE_PLACE_ID
+const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
 const CACHE_KEY = 'google_reviews_cache'
 const CACHE_DURATION = 24 * 60 * 60 * 1000 // 24 hours in milliseconds
 
@@ -24,7 +26,14 @@ function Testimonials() {
 
   // Fetch reviews from Google Places API using Google Maps JavaScript library
   useEffect(() => {
-    const fetchReviews = () => {
+    const fetchReviews = async () => {
+      // Check if API key and Place ID are configured
+      if (!GOOGLE_API_KEY || !PLACE_ID) {
+        console.warn('Google Maps API key or Place ID not configured')
+        setLoading(false)
+        return
+      }
+
       // Check if we have cached reviews
       const cachedData = localStorage.getItem(CACHE_KEY)
       if (cachedData) {
@@ -43,57 +52,49 @@ function Testimonials() {
         }
       }
 
-      // Wait for Google Maps API to load
-      const checkGoogleMaps = setInterval(() => {
-        if (window.google && window.google.maps && window.google.maps.places && window.google.maps.places.Place) {
-          clearInterval(checkGoogleMaps)
+      try {
+        // Dynamically load Google Maps API
+        await loadGoogleMapsAPI(GOOGLE_API_KEY, ['places'])
+        
+        // Use the new Place class (recommended as of March 2025)
+        const place = new window.google.maps.places.Place({
+          id: PLACE_ID,
+        })
+        
+        // Fetch place details with reviews using the new API
+        const response = await place.fetchFields({
+          fields: ['reviews']
+        })
+        
+        const placeData = response.place
+        
+        if (placeData.reviews && placeData.reviews.length > 0) {
+          const formattedReviews = placeData.reviews.map((review, index) => ({
+            id: index + 1,
+            name: review.authorAttribution?.displayName || review.author_name || 'Anonymous',
+            rating: review.rating,
+            text: review.text || review.textContent || '',
+            image: review.authorAttribution?.photoURI || review.profile_photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(review.authorAttribution?.displayName || 'User')}&background=random`
+          }))
           
-          try {
-            // Use the new Place class (recommended as of March 2025)
-            const place = new window.google.maps.places.Place({
-              id: PLACE_ID,
-            })
-            
-            // Fetch place details with reviews using the new API
-            place.fetchFields({
-              fields: ['reviews']
-            }).then((response) => {
-              const placeData = response.place
-              
-              if (placeData.reviews && placeData.reviews.length > 0) {
-                const formattedReviews = placeData.reviews.map((review, index) => ({
-                  id: index + 1,
-                  name: review.authorAttribution?.displayName || review.author_name || 'Anonymous',
-                  rating: review.rating,
-                  text: review.text || review.textContent || '',
-                  image: review.authorAttribution?.photoURI || review.profile_photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(review.authorAttribution?.displayName || 'User')}&background=random`
-                }))
-                
-                // Cache the reviews in localStorage
-                localStorage.setItem(CACHE_KEY, JSON.stringify({
-                  reviews: formattedReviews,
-                  timestamp: Date.now()
-                }))
-                
-                setTestimonials(formattedReviews)
-              } else {
-                console.log('No reviews found')
-                setTestimonials([])
-              }
-              setLoading(false)
-            }).catch((error) => {
-              console.error('Error fetching place details:', error)
-              setTestimonials([])
-              setLoading(false)
-            })
-          } catch (err) {
-            console.error('Error setting up Places service:', err)
-            setError(err.message)
-            setTestimonials([])
-            setLoading(false)
-          }
+          // Cache the reviews in localStorage
+          localStorage.setItem(CACHE_KEY, JSON.stringify({
+            reviews: formattedReviews,
+            timestamp: Date.now()
+          }))
+          
+          setTestimonials(formattedReviews)
+        } else {
+          console.log('No reviews found')
+          setTestimonials([])
         }
-      }, 100)
+        setLoading(false)
+      } catch (err) {
+        console.error('Error loading Google Maps or fetching reviews:', err)
+        setError(err.message)
+        setTestimonials([])
+        setLoading(false)
+      }
     }
 
     fetchReviews()
